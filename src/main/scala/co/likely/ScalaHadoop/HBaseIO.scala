@@ -15,32 +15,32 @@ object HBaseIO {
     override def setup(job : Job) : Unit = ();
   }
 
-  class HBaseSingleTableOutput (
+  class HBaseSingleTableOutput[V <: Writable] (
     val outFormatClass : java.lang.Class[TableOutputFormat[NullWritable]]
-  ) extends Output[NullWritable, Writable] {
+  ) extends Output[NullWritable, V] {
     override def setup(job : Job) : Unit = ();
   }
 
-  class HBaseMultiTableOutput (
+  class HBaseMultiTableOutput[V <: Writable] (
     val outFormatClass : java.lang.Class[MultiTableOutputFormat]
-  ) extends Output[ImmutableBytesWritable, Writable] {
+  ) extends Output[ImmutableBytesWritable, V] {
     override def setup(job : Job) : Unit = ();
   }
 
-  class HBaseMultiTableIO extends IO[ImmutableBytesWritable, Writable, ImmutableBytesWritable, Result] {
+  class HBaseMultiTableIO[V <: Writable] extends IO[ImmutableBytesWritable, V, ImmutableBytesWritable, Result] {
     val inFormatClass  : Class[TableInputFormat] = classOf[TableInputFormat];
     val outFormatClass : Class[MultiTableOutputFormat] = classOf[MultiTableOutputFormat];
     val input = new HBaseInput(inFormatClass);
-    val output = new HBaseMultiTableOutput(outFormatClass); 
+    val output = new HBaseMultiTableOutput[V](outFormatClass); 
   }
 
-  class HBaseSingleTableIO extends IO[NullWritable, Writable, ImmutableBytesWritable, Result] {
+  class HBaseSingleTableIO[V <: Writable] extends IO[NullWritable, V, ImmutableBytesWritable, Result] {
     val inFormatClass : Class[TableInputFormat] = classOf[TableInputFormat];
     val outFormatClass : Class[TableOutputFormat[NullWritable]] = classOf[TableOutputFormat[NullWritable]];
     val input = new HBaseInput(inFormatClass);
-    val output = new HBaseSingleTableOutput(outFormatClass);
+    val output = new HBaseSingleTableOutput[V](outFormatClass);
   }
 
-  def MultiTable = new HBaseMultiTableIO;
-  def SingleTable = new HBaseSingleTableIO;
+  def MultiTable[V <: Writable] = new HBaseMultiTableIO[V];
+  def SingleTable[V <: Writable] = new HBaseSingleTableIO[V];
 }
