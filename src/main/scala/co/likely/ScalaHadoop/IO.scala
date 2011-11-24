@@ -3,8 +3,6 @@ package co.likely.ScalaHadoop
 import org.apache.hadoop.mapreduce._;
 import org.apache.hadoop.io._;
 
-import scala.reflect.Manifest;
-
 object IO {
 
   trait Input[K, V] {

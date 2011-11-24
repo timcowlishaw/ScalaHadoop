@@ -3,7 +3,7 @@ package co.likely.ScalaHadoop
 import org.apache.hadoop.mapreduce._;
 import org.apache.hadoop.io._;
 import org.apache.hadoop.fs.Path
-
+import scala.reflect.Manifest;
 import IO._
 
   /** This is a general class for inputs and outputs into the Map Reduce jobs.  Note that it's possible to
