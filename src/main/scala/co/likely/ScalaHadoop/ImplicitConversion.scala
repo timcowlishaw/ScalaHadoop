@@ -1,6 +1,6 @@
 // This is inspired by Shadoop 
 // (http://blog.jonhnnyweslley.net/2008/05/shadoop.html) 
-package com.asimma.ScalaHadoop
+package co.likely.ScalaHadoop
 
 import org.apache.hadoop.io._
 

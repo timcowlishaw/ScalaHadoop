@@ -1,4 +1,4 @@
-package com.asimma.ScalaHadoop;
+package co.likely.ScalaHadoop;
 
 import org.apache.hadoop.io._;
 import MapReduceTaskChain._;

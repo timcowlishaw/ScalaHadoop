@@ -1,4 +1,4 @@
-package com.asimma.ScalaHadoop;
+package co.likely.ScalaHadoop;
 
 abstract class ScalaHadoopTool extends org.apache.hadoop.conf.Configured with org.apache.hadoop.util.Tool  {
 
