@@ -2,7 +2,6 @@ package co.likely.ScalaHadoop
 
 import org.apache.hadoop.mapreduce._;
 import org.apache.hadoop.conf._;
-import org.apache.hadoop.fs.Path
 
 import MapReduceTaskChain._;
 
@@ -61,9 +60,9 @@ class MapReduceTaskChain[KIN, VIN, KOUT, VOUT] extends Cloneable {
 
   // TODO:  This is a type system disaster, but the alternatives are worse
   var nextInput:  IO.Input[KOUT,VOUT]    = 
-      new IO.Input(tmpDir,  classOf[lib.input.SequenceFileInputFormat[KOUT,VOUT]]);
+      new FileIO.FileInput(tmpDir,  classOf[lib.input.SequenceFileInputFormat[KOUT,VOUT]]);
   var output:     IO.Output[KOUT,VOUT]   = 
-      new IO.Output(tmpDir,  classOf[lib.output.SequenceFileOutputFormat[KOUT,VOUT]]);
+      new FileIO.FileOutput(tmpDir,  classOf[lib.output.SequenceFileOutputFormat[KOUT,VOUT]]);
 
 
   def cloneTypesafe() : thisType  = clone().asInstanceOf[thisType];
@@ -124,8 +123,8 @@ class MapReduceTaskChain[KIN, VIN, KOUT, VOUT] extends Cloneable {
       job setInputFormatClass    prev.nextInput.inFormatClass; 
       job setOutputFormatClass   output.outFormatClass;
 
-      lib.input.FileInputFormat.addInputPath(job, new Path(prev.nextInput.dirName));
-      lib.output.FileOutputFormat.setOutputPath(job, new Path(output.dirName));
+      prev.nextInput.setup(job);
+      output.setup(job);
 
 
       job waitForCompletion true;

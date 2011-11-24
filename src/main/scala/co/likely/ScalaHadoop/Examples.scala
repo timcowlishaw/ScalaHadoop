@@ -48,9 +48,9 @@ object WordListReducer extends TypedReducer[LongWritable, Text, LongWritable, Te
 object WordCount extends ScalaHadoopTool{ 
   def run(args: Array[String]) : Int = {  
     val c = MapReduceTaskChain.init() -->
-    IO.Text[LongWritable, Text](args(0)).input                    -->  
+    FileIO.Text[LongWritable, Text](args(0)).input                    -->  
     MapReduceTask.MapReduceTask(TokenizerMap1, SumReducer)         -->
-    IO.Text[Text, LongWritable](args(1)).output;
+    FileIO.Text[Text, LongWritable](args(1)).output;
     c.execute();
     return 0;
   }
@@ -59,10 +59,10 @@ object WordCount extends ScalaHadoopTool{
 object WordsWithSameCount extends ScalaHadoopTool {
   def run(args: Array[String]) : Int = {  
     val c = MapReduceTaskChain.init() -->
-    IO.Text[LongWritable, Text](args(0)).input                    -->  
+    FileIO.Text[LongWritable, Text](args(0)).input                    -->  
     MapReduceTask.MapReduceTask(TokenizerMap1, SumReducer)        -->
     MapReduceTask.MapReduceTask(FlipKeyValueMap, WordListReducer) -->
-    IO.Text[LongWritable, Text](args(1)).output;
+    FileIO.Text[LongWritable, Text](args(1)).output;
     c.execute();
     return 0;
   }
